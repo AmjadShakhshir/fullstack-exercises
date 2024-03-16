@@ -29,7 +29,7 @@ sequenceDiagram
 
     browser->>server Post https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
-    server-->>browser: [{ "content": "hello", "date": "2024-3-16" }]
+    server-->>browser: { "content": "hello", "date": "2024-3-16" }
     server-->>broswer 302 Redirect (Location: /notes)
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
