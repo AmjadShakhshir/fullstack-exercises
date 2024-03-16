@@ -19,17 +19,33 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const personObject = {
-      id: JSON.stringify(Math.floor(Math.random() * 1000000)),
-      name: newName,
-      number: newNumber,
-    };
 
-    PersonServices.create(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName("");
-      setNewNumber("");
-    });
+    if (persons.some((person) => person.name === newName) && window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+      const person = persons.find((person) => person.name === newName);
+      const changedPerson = { ...person, number: newNumber };
+
+      PersonServices.updated(person.id, changedPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.map((person) => (person.id !== returnedPerson.id ? person : returnedPerson)));
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((error) => {
+          console.log("Error: ", error);
+        });
+    } else {
+      const personObject = {
+        id: persons.length + 1,
+        name: newName,
+        number: newNumber,
+      };
+
+      PersonServices.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewNumber("");
+      });
+    }
   };
 
   const deletePerson = (id) => {

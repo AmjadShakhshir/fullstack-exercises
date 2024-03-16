@@ -11,6 +11,11 @@ const create = async (newObject) => {
   return request.then((response) => response.data);
 };
 
+const updated = async (id, newObject) => {
+  const request = axios.put(`${baseUrl}/${id}`, newObject);
+  return request.then((response) => response.data);
+};
+
 const deleted = async (id) => {
   const request = axios.delete(`${baseUrl}/${id}`);
   return request.then((response) => response.data);
@@ -19,5 +24,6 @@ const deleted = async (id) => {
 export default {
   getAll,
   create,
+  updated,
   deleted,
 };
