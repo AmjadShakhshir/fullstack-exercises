@@ -20,7 +20,7 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
-      id: persons.length + 1,
+      id: JSON.stringify(Math.floor(Math.random() * 1000000)),
       name: newName,
       number: newNumber,
     };
@@ -34,9 +34,13 @@ const App = () => {
 
   const deletePerson = (id) => {
     if (window.confirm("Do you really want to delete this person?")) {
-      PersonServices.deleted(id).then(() => {
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      PersonServices.deleted(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {
+          console.log("Error: ", error);
+        });
     }
   };
 
