@@ -8,7 +8,7 @@
     {
       "id": "2",
       "content": "Browser can execute only JavaScript",
-      "important": false
+      "important": true
     },
     {
       "id": "3",
@@ -18,11 +18,21 @@
     {
       "id": "6e51",
       "content": "let me if there's something difference",
-      "important": true
+      "important": false
     },
     {
       "id": "63e6",
       "content": "let me if there's something difference",
+      "important": false
+    },
+    {
+      "id": "51cb",
+      "content": "Hanna let me come!",
+      "important": true
+    },
+    {
+      "id": "52cc",
+      "content": "Hanna love you!",
       "important": true
     }
   ]
