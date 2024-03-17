@@ -4,12 +4,14 @@ import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import PersonServices from "./services/PersonServices";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     PersonServices.getAll().then((initialPersons) => {
@@ -27,6 +29,10 @@ const App = () => {
       PersonServices.updated(person.id, changedPerson)
         .then((returnedPerson) => {
           setPersons(persons.map((person) => (person.id !== returnedPerson.id ? person : returnedPerson)));
+          setMessage(`${returnedPerson.name} Changed his number.`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
           setNewName("");
           setNewNumber("");
         })
@@ -35,16 +41,22 @@ const App = () => {
         });
     } else {
       const personObject = {
-        id: persons.length + 1,
+        id: JSON.stringify(persons.length + 1),
         name: newName,
         number: newNumber,
       };
 
-      PersonServices.create(personObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
-      });
+      if (!persons.some((person) => person.name.toLowerCase() === newName.toLowerCase())) {
+        PersonServices.create(personObject).then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setMessage(`Added ${returnedPerson.name}.`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+          setNewName("");
+          setNewNumber("");
+        });
+      }
     }
   };
 
@@ -76,9 +88,10 @@ const App = () => {
 
   return (
     <div>
-      <h2>
+      <h1>
         <b>Phonebook</b>
-      </h2>
+      </h1>
+      {message && <Notification message={message} />}
       <Filter handleFilterChange={handleFilterChange} />
       <h2>
         <b>Add a new</b>
