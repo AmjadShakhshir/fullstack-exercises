@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
   const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     PersonServices.getAll().then((initialPersons) => {
@@ -36,8 +37,8 @@ const App = () => {
           setNewName("");
           setNewNumber("");
         })
-        .catch((error) => {
-          console.log("Error: ", error);
+        .catch(() => {
+          setErrorMessage(`Information of ${person.name} has already been removed from server.`);
         });
     } else {
       const personObject = {
@@ -47,15 +48,19 @@ const App = () => {
       };
 
       if (!persons.some((person) => person.name.toLowerCase() === newName.toLowerCase())) {
-        PersonServices.create(personObject).then((returnedPerson) => {
-          setPersons(persons.concat(returnedPerson));
-          setMessage(`Added ${returnedPerson.name}.`);
-          setTimeout(() => {
-            setMessage(null);
-          }, 5000);
-          setNewName("");
-          setNewNumber("");
-        });
+        PersonServices.create(personObject)
+          .then((returnedPerson) => {
+            setPersons(persons.concat(returnedPerson));
+            setMessage(`Added ${returnedPerson.name}.`);
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch(() => {
+            setErrorMessage(`There was an error while adding ${personObject.name}.`);
+          });
       }
     }
   };
@@ -65,9 +70,10 @@ const App = () => {
       PersonServices.deleted(id)
         .then(() => {
           setPersons(persons.filter((person) => person.id !== id));
+          setMessage(`Deleted person.`);
         })
-        .catch((error) => {
-          console.log("Error: ", error);
+        .catch(() => {
+          setErrorMessage(`Information of ${persons.find((person) => person.id === id).name} has already been removed from server.`);
         });
     }
   };
@@ -92,6 +98,7 @@ const App = () => {
         <b>Phonebook</b>
       </h1>
       {message && <Notification message={message} />}
+      {errorMessage && <Notification message={errorMessage} error={true} />}
       <Filter handleFilterChange={handleFilterChange} />
       <h2>
         <b>Add a new</b>
