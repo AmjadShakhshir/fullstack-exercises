@@ -8,12 +8,12 @@
     {
       "id": "2",
       "content": "Browser can execute only JavaScript",
-      "important": true
+      "important": false
     },
     {
       "id": "3",
       "content": "GET and POST are the most important methods of HTTP protocol",
-      "important": true
+      "important": false
     },
     {
       "id": "6e51",
@@ -34,6 +34,16 @@
       "id": "52cc",
       "content": "Hanna love you!",
       "important": true
+    },
+    {
+      "id": "8191",
+      "content": "Write the def of Uniform ihttps://en.wikipedia.org/wiki/REST#Architectural_constraintsnterface from ",
+      "important": false
+    },
+    {
+      "id": "14dc",
+      "content": "I should do review for the second level of maturity https://martinfowler.com/articles/richardsonMaturityModel.html",
+      "important": false
     }
   ]
 }
