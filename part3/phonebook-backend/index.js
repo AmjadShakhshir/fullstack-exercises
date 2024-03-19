@@ -39,48 +39,43 @@ app.get("/info", (req, res) => {
   res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`);
 });
 
-// app.get("/api/persons/:id", (request, response) => {
-//   const id = Number(request.params.id);
-//   const person = persons.find((person) => person.id === id);
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find((person) => person.id === id);
 
-//   if (person) {
-//     response.json(person);
-//   } else {
-//     response.status(404).end();
-//   }
-// });
+  if (person) {
+    response.json(person);
+  } else {
+    response.status(404).end();
+  }
+});
 
-// const generateId = () => {
-//   const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
-//   return maxId + 1;
-// };
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
 
-// app.post("/api/persons", (request, response) => {
-//   const body = request.body;
+  if (!body.name) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
 
-//   if (!body.content) {
-//     return response.status(400).json({
-//       error: "content missing",
-//     });
-//   }
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: Math.floor(Math.random() * 1000) + 1,
+  };
 
-//   const person = {
-//     content: body.content,
-//     important: Boolean(body.important) || false,
-//     id: generateId(),
-//   };
+  persons = persons.concat(person);
 
-//   persons = persons.concat(person);
+  response.json(person);
+});
 
-//   response.json(person);
-// });
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  persons = persons.filter((person) => person.id !== id);
 
-// app.delete("/api/persons/:id", (request, response) => {
-//   const id = Number(request.params.id);
-//   persons = persons.filter((note) => note.id !== id);
-
-//   response.status(204).end();
-// });
+  response.status(204).end();
+});
 
 const PORT = 3004;
 app.listen(PORT, () => {
