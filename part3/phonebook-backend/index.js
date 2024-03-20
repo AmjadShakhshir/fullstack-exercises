@@ -1,8 +1,15 @@
 import express from "express";
+import morgan from "morgan";
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+morgan.token("tiny", function (req, res) {
+  return [`${req.method}`, `${req.path}`, `${res.statusCode}`, `${res.responseTime} ms`, `${JSON.stringify(req.body)}`].join(" ");
+});
+
+app.use(morgan(":tiny"));
 
 let persons = [
   {
