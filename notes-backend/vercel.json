@@ -16,11 +16,6 @@
     {
       "src": "/(.*)",
       "dest": "/"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/$1",
-      "continue": true
     }
   ]
 }
