@@ -7,12 +7,16 @@
     },
     {
       "src": "dist/*",
-      "use": "@vercel/static"
+      "use": "@vercel/node"
     }
   ],
   "rewrites": [
     {
-      "source": "/dist/(.*)",
+      "source": "/(.*)",
+      "destination": "/$1"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
