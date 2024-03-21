@@ -4,10 +4,12 @@
     {
       "src": "*.js",
       "use": "@vercel/node"
-    },
+    }
+  ],
+  "rewrites": [
     {
-      "src": "/dist/**",
-      "use": "@vercel/vite"
+      "source": "/dist/(.*)",
+      "destination": "/index.html"
     }
   ],
   "routes": [
