@@ -2,22 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "dist/*",
+      "src": "/*.js",
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/$1"
+      "src": "/(.*)",
+      "dest": "/$1"
     },
     {
-      "source": "/dist/(.*)",
-      "destination": "/$1"
+      "src": "/(.*)",
+      "dest": "/public/$1"
     }
   ]
 }
