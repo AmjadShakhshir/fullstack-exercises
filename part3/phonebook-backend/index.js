@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.static("dist"));
+app.use(express.static("dist"));
 
 morgan.token("tiny", function (req, res) {
   return [`${req.method}`, `${req.path}`, `${res.statusCode}`, `${res.responseTime} ms`, `${JSON.stringify(req.body)}`].join(" ");
