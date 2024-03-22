@@ -39,9 +39,9 @@ const requestLogger = (request, response, next) => {
 
 app.use(requestLogger);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "dist", "index.html"));
+// });
 
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to Api page</h1>");
