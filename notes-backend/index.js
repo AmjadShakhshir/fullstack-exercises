@@ -1,10 +1,7 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
 
 const app = express();
-
-const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,10 +35,6 @@ const requestLogger = (request, response, next) => {
 };
 
 app.use(requestLogger);
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "dist", "index.html"));
-// });
 
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to Api page</h1>");
