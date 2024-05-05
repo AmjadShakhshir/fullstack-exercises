@@ -16,28 +16,7 @@ morgan.token("tiny", function (req, res) {
 
 app.use(morgan(":tiny"));
 
-// let persons = [
-//   {
-//     id: 1,
-//     name: "Arto Hellas",
-//     number: "040-123456",
-//   },
-//   {
-//     id: 2,
-//     name: "Ada Lovelace",
-//     number: "39-44-5323523",
-//   },
-//   {
-//     id: 3,
-//     name: "Dan Abramov",
-//     number: "12-43-234345",
-//   },
-//   {
-//     id: 4,
-//     name: "Mary Poppendieck",
-//     number: "39-23-6423122",
-//   },
-// ];
+const opts = { runValidators: true };
 
 app.get("/", (req, res) => {
   res.send("<h1>Api Running!</h1>");
@@ -74,16 +53,20 @@ app.post("/api/persons", (request, response, next) => {
     });
   }
 
-  if (persons.find((person) => person.name === body.name)) {
+  const findPerson = PersonRepo.findOne({ name: body.name });
+  if (findPerson) {
     const person = {
       number: body.number,
     };
 
-    PersonRepo.findByIdAndUpdate(request.params.id, person, { new: true })
+    PersonRepo.findByIdAndUpdate(request.params.id, person, { new: true }, opts)
       .then((updatedPerson) => {
         response.json(updatedPerson);
       })
-      .catch((error) => next(error));
+      .catch((error) => {
+        console.log(error.response.data.error);
+        next(error);
+      });
   } else {
     const person = new PersonRepo({
       name: body.name,
@@ -95,14 +78,17 @@ app.post("/api/persons", (request, response, next) => {
       .then((savedPerson) => {
         response.json(savedPerson);
       })
-      .catch((error) => next(error));
+      .catch((error) => {
+        next(error);
+        console.log(error.response.data.error);
+      });
   }
 });
 
 app.put("/api/persons/:id", (request, response, next) => {
   const { name, number } = request.body;
 
-  PersonRepo.findByIdAndUpdate(request.params.id, { name, number }, { new: true, runValidators: true, context: "query" })
+  PersonRepo.findByIdAndUpdate(request.params.id, { name, number }, { new: true, opts, context: "query" })
     .then((updatedPerson) => {
       response.json(updatedPerson);
     })
